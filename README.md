@@ -1,2 +1,2 @@
-# AHK-Script
+# AHK-Scripts
 AHK Script to make life easier.
