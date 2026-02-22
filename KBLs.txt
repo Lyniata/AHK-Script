@@ -1,0 +1,131 @@
+; ========================================
+; Initial profile state
+; ========================================
+profile := 0  ; Start with Profile 0 (default)
+
+; ========================================
+; Profile switching (CapsLock + F1–F4)
+; ========================================
+CapsLock & F1::
+    profile := 1
+    ToolTip, You are now in Profile 1 (Press F12 for help)
+    SetTimer, RemoveToolTip, -2000
+return
+
+CapsLock & F2::
+    profile := 2
+    ToolTip, You are now in Profile 2 (Press F12 for help)
+    SetTimer, RemoveToolTip, -2000
+return
+
+CapsLock & F3::
+    profile := 3
+    ToolTip, You are now in Profile 3 (Press F12 for help)
+    SetTimer, RemoveToolTip, -2000
+return
+
+CapsLock & F4::
+    profile := 0
+    ToolTip, You are back to the Default Profile
+    SetTimer, RemoveToolTip, -2000
+return
+
+; ========================================
+; F12: Show shortcut list for the active profile
+; ========================================
+F12::
+    if (profile = 1)
+        MsgBox, Profile 1 Shortcuts:`n`nF1: Get pixel color and copy to clipboard`nF2: Launch Windows Terminal`nF11: Launch Program Launcher.ahk
+    else if (profile = 2)
+        MsgBox, Profile 2 has no remappings.
+    else if (profile = 3)
+        MsgBox, Profile 3 has no remappings.
+return
+
+; ========================================
+; Profile 1 Hotkeys
+; ========================================
+#If (profile = 1)
+
+; F1: Get pixel color and copy to clipboard
+F1::
+    MouseGetPos, x, y
+    PixelGetColor, color, %x%, %y%, RGB
+    color := SubStr(color, 3)
+    hexColor := "#" . color
+    Clipboard := hexColor
+    ToolTip, Hex Color Code copied to clipboard: %hexColor%
+    SetTimer, RemoveToolTip, -2000
+return
+
+; F2: Launch Windows Terminal
+F2::
+    Run, wt.exe
+    ToolTip, Launching Windows Terminal...
+    SetTimer, RemoveToolTip, -2000
+return
+
+; F11: Launch Program Launcher.ahk
+F11::
+    Run, "G:\AHKs\Program Launcher.ahk"
+    ToolTip, Starting Program Launcher...
+    SetTimer, RemoveToolTip, -2000
+return
+
+; F3: Open Command Prompt (works across all PCs)
+F3::
+    Run, cmd.exe
+    ToolTip, Opening Command Prompt...
+    SetTimer, RemoveToolTip, -2000
+return
+
+#If
+
+; ========================================
+; Profile 2 Hotkeys (none)
+; ========================================
+#If (profile = 2)
+
+; F1: Launch Visual Studio 2026 
+F1::
+    ; Check if the Visual Studio shortcut exists
+    IfExist, C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio.lnk
+    {
+        Run, "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio.lnk"
+        ToolTip, Launching Visual Studio 2026...
+    }
+    else
+    {
+        ToolTip, Visual Studio shortcut not found!
+    }
+    SetTimer, RemoveToolTip, -2000
+return
+
+; F2: Launch Visual Studio Code (VSC)
+F2::
+    Run, "%LocalAppData%\Programs\Microsoft VS Code\Code.exe"
+    ToolTip, Launching Visual Studio Code...
+    SetTimer, RemoveToolTip, -2000
+return
+#If
+
+; ========================================
+; Profile 3 Hotkeys (none)
+; ========================================
+#If (profile = 3)
+; No remappings
+#If
+
+; ========================================
+; Profile 0 (default) - no remappings
+; ========================================
+#If (profile = 0)
+; Default behavior
+#If
+
+; ========================================
+; Remove ToolTip label (only once)
+; ========================================
+RemoveToolTip:
+    ToolTip
+return
